@@ -1,0 +1,30 @@
+version: "1"
+
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data:cached
+  app:
+    build:
+      context: .
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./src:/src
+    deploy:
+      resources:
+        limits:
+          memory: "16000M"
+    depends_on:
+      - qdrant
+    environment:
+      - QDRANT_URL=http://qdrant_demo_qdrant:5432
+    command: >
+      sh -c "python app.py"
