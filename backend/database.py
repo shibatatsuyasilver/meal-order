@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-
-URL_DATABASE = "postgresql://postgres@localhost:5432/meal-order"
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+URL_DATABASE = "postgresql://silver:postgres@localhost:5432/meal-order"
 
 engine = create_engine(URL_DATABASE)
 
