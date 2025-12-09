@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 venv/
 .venv/
+env/
 .env
 .env.local
 .pytest_cache/
@@ -36,3 +37,6 @@ backend/data/*.pdf
 # Ignore accidental virtual envs
 backend/meal-order/
 meal-order/
+
+# Documentation
+refactoring_plan.md
