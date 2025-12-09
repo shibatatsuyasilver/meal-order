@@ -1,0 +1,15 @@
+.git
+.gitignore
+__pycache__/
+*.pyc
+.env
+.env.local
+pg-data
+ollama
+node_modules
+react-meal-shopping-cart/node_modules
+react-meal-shopping-cart/build
+react-meal-shopping-cart/dist
+backend/__pycache__
+backend/data
+backend/meal-order

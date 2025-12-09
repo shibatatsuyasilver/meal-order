@@ -1,30 +1,68 @@
-version: "1"
+version: "3.8"
 
 services:
-  postgres:
-    image: postgres:12
+  frontend:
     restart: always
+    build:
+      context: ./react-meal-shopping-cart
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: frontend
+    volumes:
+      - ./react-meal-shopping-cart:/usr/frontend
+      - /usr/frontend/node_modules
+    command: >
+      sh -c "npm start"
+    depends_on:
+      - backend
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    container_name: ollama
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+    pull_policy: always
+    tty: true
+    restart: always
+
+  db:
+    restart: always
+    image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-meal-order}
+      POSTGRES_USER: ${POSTGRES_USER:-silver}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    container_name: postgres_db
     ports:
       - '5432:5432'
     volumes:
-      - db-data:/var/lib/postgresql/data:cached
-  app:
+      - ./pg-data:/var/lib/postgresql/data:cached
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    restart: always
     build:
-      context: .
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "7860:7860"
-    volumes:
-      - ./src:/src
+      - "8000:8000"
+    container_name: backend
     deploy:
       resources:
         limits:
           memory: "16000M"
     depends_on:
-      - qdrant
+      - db
+    env_file:
+      - .env
     environment:
-      - QDRANT_URL=http://qdrant_demo_qdrant:5432
+      - DATABASE_URL=${DATABASE_URL:-postgresql+psycopg://silver:postgres@postgres_db:5432/meal-order}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+    volumes:
+      - ./backend:/usr/backend
     command: >
-      sh -c "python app.py"
+      sh -c "uvicorn main:app --reload --port 8000 --host 0.0.0.0"

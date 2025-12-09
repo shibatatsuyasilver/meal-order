@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.env
+.env.local
+.pytest_cache/
+
+# Node/React
+node_modules/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+coverage/
+
+# System
+*.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Project Specific
+pg-data/
+ollama/
+backend/data/*.pdf
+# Except allow gitkeep if needed, but for now we ignore PDFs
+!backend/data/.gitkeep
+
+# Ignore accidental virtual envs
+backend/meal-order/
+meal-order/
