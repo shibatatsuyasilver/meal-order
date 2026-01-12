@@ -1,7 +1,13 @@
+import { Button, List, Typography, Divider, Col, message, Card, Space } from "antd";
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import api from "./api";
+
+const { Title, Text } = Typography;
+
 export default function Basket(props) {
   const { cartItems, onAdd, onRemove } = props;
   const itemPrice = cartItems.reduce((a, c) => a + c.qty * c.price, 0);
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -20,44 +26,68 @@ export default function Basket(props) {
         console.log(temp);
         await api.post("/transcations/", temp);
       }
+      message.success('Order placed successfully!');
     } catch (error) {
       console.error("Error sending order:", error);
+      message.error('Failed to place order.');
     }
   };
+
   return (
-    <aside className="block col-2">
-      <h2>Cart Items</h2>
-      <div>
-        {cartItems.length === 0 && <div>Cart is empty</div>}
-        {cartItems.map((item) => (
-          <div key={item.id} className="row">
-            <div className="col-1">{item.name}</div>
-            <div className="col-1">
-              <button onClick={() => onRemove(item)} className="remove">
-                -
-              </button>
-              <button onClick={() => onAdd(item)} className="add">
-                +
-              </button>
-            </div>
-            <div className="col-1 text-right">
-              {item.qty} x ${item.price.toFixed(2)}
-            </div>
-          </div>
-        ))}
+    <Col span={8}>
+      <Card title={<Title level={3} style={{margin: 0}}>Cart Items</Title>} className="cart-card">
+        {cartItems.length === 0 && <Text>Cart is empty</Text>}
+        <List
+          itemLayout="horizontal"
+          dataSource={cartItems}
+          renderItem={(item) => (
+            <List.Item
+              actions={[
+                <Space>
+                    <Button
+                        size="small"
+                        icon={<MinusOutlined />}
+                        onClick={() => onRemove(item)}
+                    />
+                    <Button
+                        size="small"
+                        icon={<PlusOutlined />}
+                        onClick={() => onAdd(item)}
+                        type="primary"
+                        style={{ backgroundColor: '#7554a0', borderColor: '#7554a0' }}
+                    />
+                </Space>
+              ]}
+            >
+              <List.Item.Meta
+                title={item.name}
+                description={`${item.qty} x $${item.price.toFixed(2)}`}
+              />
+              <div style={{ marginLeft: '10px' }}>
+                  ${(item.qty * item.price).toFixed(2)}
+              </div>
+            </List.Item>
+          )}
+        />
         {cartItems.length !== 0 && (
           <>
-            <hr />
-            <div className="row">
-              <div className="col-2">Total Price</div>
-              <div className="col-1">${itemPrice.toFixed(2)}</div>
+            <Divider />
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+              <Text strong>Total Price</Text>
+              <Text strong>${itemPrice.toFixed(2)}</Text>
             </div>
-            <div>
-              <button onClick={handleSubmit}>Checkout</button>
-            </div>
+            <Button
+                type="primary"
+                block
+                size="large"
+                onClick={handleSubmit}
+                style={{ backgroundColor: '#7554a0', borderColor: '#7554a0' }}
+            >
+              Checkout
+            </Button>
           </>
         )}
-      </div>
-    </aside>
+      </Card>
+    </Col>
   );
 }

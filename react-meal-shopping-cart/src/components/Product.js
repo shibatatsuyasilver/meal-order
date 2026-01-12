@@ -1,25 +1,47 @@
+import { Card, Button, Typography, Space } from 'antd';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+
+const { Meta } = Card;
+const { Text } = Typography;
+
 export default function Product(props) {
   const { item, product, onAdd, onRemove } = props;
   return (
-    <div className="card">
-      <img className="small" src={product.image} alt={product.name} />
-      <h3>{product.name}</h3>
-      <div>${product.price}</div>
-      <div>
-        {item ? (
-          <div>
-            <button onClick={() => onRemove(item)} className="remove">
-              -
-            </button>
-            <span className="p-1">{item.qty}</span>
-            <button onClick={() => onAdd(item)} className="add">
-              +
-            </button>
-          </div>
+    <Card
+      hoverable
+      cover={<img alt={product.name} src={product.image} style={{ height: 200, objectFit: 'cover' }} />}
+      actions={[
+        item ? (
+          <Space>
+            <Button
+              icon={<MinusOutlined />}
+              onClick={() => onRemove(item)}
+              size="small"
+            />
+            <Text strong>{item.qty}</Text>
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() => onAdd(item)}
+              size="small"
+              type="primary"
+              style={{ backgroundColor: '#7554a0', borderColor: '#7554a0' }}
+            />
+          </Space>
         ) : (
-          <button onClick={() => onAdd(product)}>Add To Cart</button>
-        )}
-      </div>
-    </div>
+          <Button
+            type="primary"
+            onClick={() => onAdd(product)}
+            style={{ backgroundColor: '#7554a0', borderColor: '#7554a0', width: '80%' }}
+          >
+            Add To Cart
+          </Button>
+        )
+      ]}
+    >
+      <Meta
+        title={product.name}
+        description={<Text strong>${product.price}</Text>}
+      />
+    </Card>
   );
 }

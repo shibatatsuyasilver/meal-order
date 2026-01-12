@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "../images/load.svg";
-const API_URL = "http://localhost:8000/upload/";
+const API_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000") + "/upload/";
 const API_METHOD = "POST";
 const STATUS_IDLE = false;
 const STATUS_UPLOADING = true;

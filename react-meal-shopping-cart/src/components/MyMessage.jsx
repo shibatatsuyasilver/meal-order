@@ -18,6 +18,10 @@ const MyMessage = ({ message }) => {
         marginRight: "10px",
         color: "white",
         backgroundColor: "#3B2A50",
+        borderRadius: "20px 20px 0 20px", // Rounded corners, distinct shape
+        padding: "10px 15px",
+        maxWidth: "60%",
+        wordWrap: "break-word",
       }}
     >
       {message.text}

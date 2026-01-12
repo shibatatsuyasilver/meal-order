@@ -8,6 +8,9 @@ A comprehensive meal ordering system powered by RAG (Retrieval Augmented Generat
 *   **RAG Integration**: Uses PDF documents (menus, health info) to provide accurate context-aware responses.
 *   **Order Parsing**: Automatically extracts order details (items, quantity, price) from conversation using LLM function calling.
 *   **Vector Search**: Utilizes `pgvector` for efficient semantic search over document embeddings.
+*   **Menu Management**: Admin interface to upload and process menu PDFs.
+*   **User Authentication**: Secure login and session management.
+*   **Modern UI**: Responsive design with sidebar navigation and chat history.
 *   **Modern Stack**: Built with FastAPI, React, LangChain, and Ollama.
 
 ## 🛠 Tech Stack
@@ -49,6 +52,21 @@ A comprehensive meal ordering system powered by RAG (Retrieval Augmented Generat
     *   **Frontend**: Open [http://localhost:3000](http://localhost:3000)
     *   **API Docs**: Open [http://localhost:8000/docs](http://localhost:8000/docs)
 
+## 🍽 MCP Restaurant Agents (ADK Demo)
+
+Run the MCP server (serves restaurant tools) and the ADK multi-agent runner:
+
+1) Start MCP server (needs Postgres seeded with `products` data):
+```bash
+python backend/mcp/server.py
+```
+2) Start the multi-agent runner (host/waiter/chef/online order). Override via env or flags if needed:
+```bash
+# defaults: MCP_SERVER_NAME=restaurant-server, MCP_SERVER_URL=http://127.0.0.1:8080
+python -m backend.mcp.agents.restaurant_runner --server-url http://127.0.0.1:8080 --server-name restaurant-server
+```
+Sample flows: greet a customer, ask for menu items, place an order, or process an online order ID.
+
 ## 🏗 Architecture
 
 ```mermaid
@@ -78,6 +96,8 @@ Key environment variables:
 * `GROQ_API_KEY`: Required for Groq-hosted LLM calls.
 * `TAVILY_API_KEY`: Required for web search fallbacks in the RAG pipeline.
 * `OLLAMA_BASE_URL`: URL for your Ollama instance (defaults to `http://ollama:11434`).
+* `MCP_SERVER_URL`: MCP server URL for the ADK runner (defaults to `http://127.0.0.1:8080`).
+* `MCP_SERVER_NAME`: MCP server name for the ADK runner (defaults to `restaurant-server`).
 
 See `.env.example` for defaults; keep your real `.env` out of version control.
 

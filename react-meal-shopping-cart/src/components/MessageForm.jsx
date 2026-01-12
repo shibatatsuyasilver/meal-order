@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { SendOutlined, FileOutlined } from "@ant-design/icons";
+import { useState, useRef } from "react";
+import { SendOutlined, PlusOutlined } from "@ant-design/icons";
+import { Input } from "antd";
 import { sendMessage, isTyping } from "react-chat-engine";
 import api from "./api";
 
 const MessageForm = (props) => {
   const [value, setValue] = useState("");
   const { chatId, creds } = props;
+  const inputRef = useRef(null);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -13,20 +15,20 @@ const MessageForm = (props) => {
     isTyping(props, chatId);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     const text = value.trim();
     var temp = {};
     temp["message"] = text;
     if (text.length > 0) {
       sendMessage(creds, chatId, { text });
-      await api
-        .post("/uploadMessage/", temp)
-        .then((r) => {
+      try {
+        const r = await api.post("/uploadMessage/", temp);
+        if (r.data && r.data["ai_message"]) {
           sendMessage(r.data["ai_message"]);
-        })
-        .catch((e) => console.log(e));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     setValue("");
@@ -37,31 +39,36 @@ const MessageForm = (props) => {
   };
 
   return (
-    <form className="message-form" onSubmit={handleSubmit}>
-      <input
-        className="message-input"
-        placeholder="Send a message..."
-        value={value}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-      />
-      <label htmlFor="upload-button">
-        <span className="image-button">
-          <FileOutlined className="picture-icon" />
-        </span>
-        <button type="submit" className="send-button">
-          <SendOutlined className="send-icon" />
-        </button>
-      </label>
+    <div className="message-form-container-card">
       <input
         type="file"
         multiple={true}
-        accept=".pdf"
-        id="upload-button"
+        accept=".pdf,.png,.jpg,.jpeg"
         style={{ display: "none" }}
-        onChange={handleUpload.bind(this)}
+        onChange={handleUpload}
+        ref={inputRef}
       />
-    </form>
+      <button
+        className="message-button upload-button"
+        onClick={() => inputRef.current.click()}
+      >
+        <PlusOutlined />
+      </button>
+      <Input
+        className="message-input-area"
+        placeholder="Type / for commands"
+        value={value}
+        onChange={handleChange}
+        onPressEnter={handleSubmit}
+        bordered={false}
+      />
+      <button
+        className="message-button send-button"
+        onClick={handleSubmit}
+      >
+        <SendOutlined />
+      </button>
+    </div>
   );
 };
 

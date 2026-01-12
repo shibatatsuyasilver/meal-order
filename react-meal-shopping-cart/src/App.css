@@ -167,56 +167,86 @@
 .message-form-container {
   position: absolute;
   bottom: 0px;
-  width: calc(100% - 36px);
-  padding: 18px;
+  width: 100%;
+  padding: 20px;
   background-color: rgb(240, 240, 240);
+  box-sizing: border-box;
 }
 
-.message-form {
-  margin: 8px;
-  overflow: hidden;
-  border-radius: 6px;
-  border: 1px solid #3b2a50;
+.message-form-container-card {
   background-color: white;
+  border-radius: 30px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
 }
 
-.message-input {
-  height: 40px;
-  width: calc(100% - 100px);
-  background-color: white;
-  border: 10px solid white;
-  padding: 0px 18px;
-  outline: none;
-  font-size: 15px;
+.message-input-area {
+  font-size: 16px;
+  margin-bottom: 0;
+  padding: 4px 8px !important;
+  flex: 1 1 auto !important;
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
 }
 
-.image-button {
+.message-input-area:focus, .message-input-area:hover {
+  box-shadow: none !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.message-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  border-radius: 50%;
+  border: none;
   cursor: pointer;
-  padding: 0px 12px;
-  height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.upload-button {
+  background-color: #7c3aed;
+  color: white;
+}
+
+.upload-button:hover {
+  background-color: #6d33d3;
+  color: white;
+}
+
+.upload-button .anticon {
+  font-size: 18px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .send-button {
-  height: 10px;
-  background-color: white;
-  border: 1px solid white;
-  padding: 20px 10px;
-  cursor: pointer;
-  position: relative;
+  background-color: #7c3aed;
+  color: white;
 }
 
-.send-icon {
-  height: 10px;
-  bottom: 1px;
-  position: absolute;
-  right: -1px;
-  transform: rotate(360deg);
-}
-
-.picture-icon {
-  top: 1px;
-  position: relative;
+.send-button .anticon {
   font-size: 14px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* FORM STYLES */

@@ -26,6 +26,10 @@ const TheirMessage = ({ lastMessage, message }) => {
             float: "left",
             backgroundColor: "#CABCDC",
             marginLeft: isFirstMessageByUser ? "4px" : "48px",
+            borderRadius: "20px 20px 20px 0", // Rounded corners, distinct shape
+            padding: "10px 15px",
+            maxWidth: "60%",
+            wordWrap: "break-word",
           }}
         >
           {message.text}

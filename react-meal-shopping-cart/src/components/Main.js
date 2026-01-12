@@ -1,21 +1,25 @@
+import { Col, Row, Typography } from "antd";
 import Product from "./Product";
+
+const { Title } = Typography;
 
 export default function Main(props) {
   const { cartItems, products, onAdd, onRemove } = props;
   return (
-    <div className=" block col-2">
-      <h2>Poducts</h2>
-      <div className="row">
+    <Col span={16}>
+      <Title level={2}>Products</Title>
+      <Row gutter={[16, 16]}>
         {products.map((product) => (
-          <Product
-            key={product.id}
-            product={product}
-            item={cartItems.find((x) => x.id === product.id)}
-            onAdd={onAdd}
-            onRemove={onRemove}
-          ></Product>
+          <Col key={product.id} xs={24} sm={12} md={8} lg={6}>
+            <Product
+              product={product}
+              item={cartItems.find((x) => x.id === product.id)}
+              onAdd={onAdd}
+              onRemove={onRemove}
+            />
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Col>
   );
 }
