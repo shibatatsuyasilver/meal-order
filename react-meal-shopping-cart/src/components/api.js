@@ -37,4 +37,15 @@ export const uploadMenu = async (file) => {
   });
 };
 
+export const deleteSession = async (sessionId) => {
+  return api.delete(`/chat_history/${sessionId}`);
+};
+
+export const deleteSessions = async (ids = [], deleteAll = false) => {
+  return api.post("/chat_history/delete", {
+    ids,
+    delete_all: deleteAll,
+  });
+};
+
 export default api;

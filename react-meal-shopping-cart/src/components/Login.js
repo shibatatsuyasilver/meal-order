@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { login } from './api';
-import { Form, Input, Button, Card, Typography, Alert } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Typography, Alert, Divider } from 'antd';
+import { UserOutlined, LockOutlined, GoogleOutlined, FacebookFilled, XOutlined, WechatOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 
 const Login = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const BACKEND_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000");
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -80,6 +83,47 @@ const Login = ({ onLoginSuccess }) => {
             </Button>
           </Form.Item>
         </Form>
+
+        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+          Don't have an account? <Link to="/register">Sign up</Link>
+        </div>
+
+        <Divider>Or Login with</Divider>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Button
+            href={`${BACKEND_URL}/auth/login/google`}
+            icon={<GoogleOutlined />}
+            block
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            Sign in with Google
+          </Button>
+          <Button
+            href={`${BACKEND_URL}/auth/login/facebook`}
+            icon={<FacebookFilled />}
+            block
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            Sign in with Facebook
+          </Button>
+          <Button
+            href={`${BACKEND_URL}/auth/login/twitter`}
+            icon={<XOutlined />}
+            block
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            Sign in with X
+          </Button>
+          <Button
+            href={`${BACKEND_URL}/auth/login/line`}
+            icon={<WechatOutlined />} // Using WeChat icon as placeholder for LINE
+            block
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            Sign in with LINE
+          </Button>
+        </div>
       </Card>
     </div>
   );

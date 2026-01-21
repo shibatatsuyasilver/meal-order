@@ -5,7 +5,9 @@ import {
   UploadOutlined,
   LogoutOutlined,
   ShoppingCartOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  TableOutlined,
+  MessageOutlined
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -18,6 +20,11 @@ const Sidebar = ({ role, onSelect, onLogout, selectedKey }) => {
       label: 'Order Meal',
     },
     {
+        key: 'chat',
+        icon: <MessageOutlined />,
+        label: 'AI Chat',
+    },
+    {
       key: 'history',
       icon: <HistoryOutlined />,
       label: 'Chat History',
@@ -28,6 +35,11 @@ const Sidebar = ({ role, onSelect, onLogout, selectedKey }) => {
             key: 'upload',
             icon: <UploadOutlined />,
             label: 'Upload Menu',
+          },
+          {
+            key: 'tables',
+            icon: <TableOutlined />,
+            label: 'Table Manager',
           },
         ]
       : []),

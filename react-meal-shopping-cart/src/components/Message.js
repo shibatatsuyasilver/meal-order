@@ -1,26 +1,39 @@
-export default function Message(props) {
-  const { message } = props;
-  const summessage = [];
-  for (let i = 0; i < message.length; i += 2) {
-    summessage.push({ u: message[i], ai: message[i + 1] });
-  }
+import React, { useEffect, useRef } from 'react';
+import { Spin } from 'antd';
+
+export default function Message({ message, processing }) {
+  const endOfMessagesRef = useRef(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [message, processing]);
+
   return (
-    <div className="block col-2">
-      <h2>Chat</h2>
-      <br />
-      {message.length === 0 && <div>NULL</div>}
-      {message.length !== 0 && (
-        <>
-          <hr />
-          {summessage.map((value, i) => (
-            <div key = {i}>
-              <div className="text-right">User:{value.u}</div>
-              <br />
-              <div className="text-left">AI:{value.ai}</div>
-            </div>
-          ))}
-        </>
+    <div className="message-list">
+      {message.length === 0 && (
+        <div style={{ textAlign: 'center', color: '#999', marginTop: '20px' }}>
+          Start a conversation...
+        </div>
       )}
+      
+      {message.map((msg, index) => {
+        // Even index = User, Odd index = AI
+        const isUser = index % 2 === 0;
+        const bubbleClass = isUser ? 'message-bubble user' : 'message-bubble ai';
+
+        return (
+          <div key={index} className={bubbleClass}>
+            {msg}
+            {/* Show spinner if this is the last AI message slot and it's empty/processing */}
+            {!isUser && processing && index === message.length - 1 && !msg && (
+               <Spin size="small" style={{ marginLeft: 5 }} />
+            )}
+          </div>
+        );
+      })}
+      
+      <div ref={endOfMessagesRef} />
     </div>
   );
 }
