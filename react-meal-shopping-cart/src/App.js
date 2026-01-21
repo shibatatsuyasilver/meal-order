@@ -15,6 +15,7 @@ import "./App.css";
 import data from "./data";
 import api from "./components/api";
 import ChatPage from "./components/ChatPage";
+import TableManager from "./components/TableManager/TableManager";
 
 const { Content } = Layout;
 
