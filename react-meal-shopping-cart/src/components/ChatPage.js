@@ -11,6 +11,12 @@ const ChatPage = ({ history, setHistory, processing, setProcessing, sessionId, s
     setValue(event.target.value);
   };
 
+  const handleNewChat = () => {
+    setSessionId(null);
+    setHistory([]);
+    setValue("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const text = value.trim();
@@ -98,6 +104,35 @@ const ChatPage = ({ history, setHistory, processing, setProcessing, sessionId, s
 
   return (
     <div className="chat-page-container">
+        <div style={{
+            padding: '10px 20px',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            borderBottom: '1px solid #e0e0e0',
+            backgroundColor: 'white',
+            zIndex: 5
+        }}>
+            <button
+                type="button"
+                onClick={handleNewChat}
+                disabled={processing}
+                style={{
+                    backgroundColor: processing ? '#d9d9d9' : '#7c3aed',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '18px',
+                    padding: '8px 16px',
+                    cursor: processing ? 'not-allowed' : 'pointer',
+                    fontSize: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontWeight: 500
+                }}
+            >
+                <PlusOutlined /> New Chat
+            </button>
+        </div>
         <Message message={history} processing={processing} />
         
         <form className="message-form" onSubmit={handleSubmit}>
